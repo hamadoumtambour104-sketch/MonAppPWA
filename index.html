@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion Scolaire Pro - Burkina Faso</title>
+    <style>
+        :root {
+            --primary: #805ad5;
+            --primary-hover: #6b46c1;
+            --bg-dark: #fbfbfa;
+            --card-bg: #f4f4f0;
+            --surface: #eaeae4;
+            --text-main: #2d2d2d;
+            --border: #d4d4cd;
+        }
+        * { box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg-dark); margin: 0; padding: 15px; color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; align-items: center; }
+        .container { width: 100%; max-width: 1200px; margin: auto; background: var(--card-bg); padding: 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 1px solid var(--border); }
+        h2, h3, h4 { color: var(--primary); text-align: center; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 14px; color: #4a4a4a; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid var(--border); background: #ffffff; color: #2d2d2d; border-radius: 8px; font-size: 15px; transition: border-color 0.3s; }
+        input:focus, select:focus, textarea:focus { border-color: var(--primary); outline: none; }
+        button { background: var(--primary); color: #ffffff; border: none; font-weight: bold; cursor: pointer; padding: 12px; width: 100%; border-radius: 8px; font-size: 16px; margin-top: 5px; transition: background 0.3s; }
+        button:hover { background: var(--primary-hover); }
+        .btn-secondary { background: #e2e2dc; color: var(--text-main); }
+        .btn-secondary:hover { background: #d0d0c8; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; background: #ffffff; border-radius: 8px; overflow: hidden; }
+        th, td { border: 1px solid var(--border); padding: 10px; text-align: center; color: var(--text-main); }
+        th { background: var(--surface); color: var(--primary); }
+        .hidden { display: none !important; }
+        .nav-buttons { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; }
+        .nav-buttons button { flex: 1; min-width: 100px; font-size: 13px; padding: 10px; background: var(--surface); color: var(--primary); border: 1px solid var(--border); }
+        .nav-buttons button:hover { background: var(--primary); color: #ffffff; }
+        .user-bar { display: flex; justify-content: space-between; align-items: center; background: var(--surface); padding: 12px 15px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; border: 1px solid var(--border); }
+        fieldset { border: 1px solid var(--border); border-radius: 8px; padding: 15px; margin-bottom: 15px; background: #ffffff; }
+        legend { font-weight: bold; color: var(--primary); padding: 0 5px; }
+        
+        .row-filters { display: flex; gap: 15px; }
+        .row-filters .form-group { flex: 1; }
+
+        .line-female, .col-female { color: #e53e3e !important; }
+        .line-female input { color: #e53e3e !important; border-color: #feb2b2 !important; }
+
+        #authSection {
+            max-width: 380px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+            border: 1px solid var(--border);
+        }
+        .lamp-container { text-align: center; margin-bottom: 20px; position: relative; }
+        .lamp-glow { width: 80px; height: 80px; background: radial-gradient(circle, rgba(128,90,213,0.2) 0%, rgba(128,90,213,0) 70%); position: absolute; top: -20px; left: 50%; transform: translateX(-50%); border-radius: 50%; z-index: 1; }
+        .lamp-icon { font-size: 45px; position: relative; z-index: 2; display: inline-block; }
+        
+        .password-container-left { display: flex; align-items: center; border: 1px solid var(--border); border-radius: 8px; background: #ffffff; overflow: hidden; }
+        .password-container-left span { padding: 0 12px; cursor: pointer; font-size: 16px; background: var(--surface); border-right: 1px solid var(--border); height: 100%; display: flex; align-items: center; }
+        .password-container-left input { border: none; border-radius: 0; background: transparent; }
+        
+        .pricing-card { background: #ffffff; border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin-bottom: 10px; cursor: pointer; transition: 0.3s; }
+        .pricing-card:hover, .pricing-card.selected { border-color: var(--primary); background: #f3ebff; }
+
+        @media print {
+            body { background: #fff; color: #000; padding: 0; }
+            .container, #appSection, #bilanTab { background: #fff; box-shadow: none; border: none; padding: 0; width: 100%; }
+            .nav-buttons, .user-bar, button, .form-group { display: none !important; }
+            #affichageBilan { border: none; padding: 0; background: #fff; color: #000; }
+            table { background: #fff; color: #000; }
+            th, td { border: 1px solid #000; color: #000 !important; }
+            th { background: #eee !important; color: #000 !important; }
+            .line-female, .col-female, .line-female input { color: #000 !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- AUTHENTIFICATION -->
+    <div id="authSection">
+        <div class="lamp-container">
+            <div class="lamp-glow"></div>
+            <div class="lamp-icon">🏮</div>
+        </div>
+        <h2 id="authTitle">Connexion</h2>
+        <div class="form-group"><label>Nom d'utilisateur</label><input type="text" id="authUser" placeholder="Identifiant"></div>
+        <div class="form-group">
+            <label>Mot de passe</label>
+            <div class="password-container-left">
+                <span onclick="basculerVisibilitePassword('authPass', this)">👁️</span>
+                <input type="password" id="authPass" placeholder="Mot de passe">
+            </div>
+        </div>
+
+        <div id="codeAdminInscriptionGroup" class="form-group hidden">
+            <label style="color:#b7791f;">Code Admin pour Inscription</label>
+            <div class="password-container-left">
+                <span onclick="basculerVisibilitePassword('codeAdminInsc', this)">👁️</span>
+                <input type="password" id="codeAdminInsc" placeholder="Code admin">
+            </div>
+        </div>
+
+        <button id="btnActionAuth" onclick="gererConnexion()">Se connecter</button>
+        <button class="btn-secondary" onclick="basculerInscription()" style="margin-top: 10px;" id="btnModeInsc">Créer un compte / S'inscrire</button>
+        <button class="btn-secondary" onclick="ouvrirModalChangementPassword()" style="margin-top: 5px; background: #edf2f7; color: #2d3748;">🔑 Modifier mon mot de passe</button>
+        <button class="btn-secondary" onclick="ouvrirModalAbonnement()" style="margin-top: 5px; background: #e6fffa; color: #234e52;">💳 Gérer / Payer mon Abonnement</button>
+        <button class="btn-secondary" onclick="ouvrirModalAdminAuth()" style="margin-top: 5px; background: #f3ebff; color: var(--primary);">⚙️ Administration </button>
+    </div>
+
+    <!-- MODALE MODIFICATION MOT DE PASSE -->
+    <div id="modalChangementPassword" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); display:flex; justify-content:center; align-items:center; z-index:1150;">
+        <div style="background:#ffffff; padding:25px; border-radius:12px; width:90%; max-width:400px; border:1px solid var(--border);">
+            <h3>Modifier son mot de passe</h3>
+            <div class="form-group"><label>Nom d'utilisateur</label><input type="text" id="pwdUser" placeholder="Votre identifiant"></div>
+            <div class="form-group"><label>Ancien mot de passe</label><input type="password" id="pwdAncien" placeholder="Mot de passe actuel"></div>
+            <div class="form-group"><label>Nouveau mot de passe</label><input type="password" id="pwdNouveau" placeholder="Nouveau mot de passe"></div>
+            <button onclick="soumettreNouveauMotDePasse()">Valider le changement</button>
+            <button class="btn-secondary" onclick="fermerModalChangementPassword()" style="margin-top: 5px;">Fermer</button>
+        </div>
+    </div>
+
+    <!-- MODALE ABONNEMENT -->
+    <div id="modalAbonnement" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); display:flex; justify-content:center; align-items:center; z-index:1100;">
+        <div style="background:#ffffff; padding:25px; border-radius:12px; width:90%; max-width:500px; border:1px solid var(--border);">
+            <h3>Formules d'Abonnement</h3>
+            <p style="font-size: 13px; text-align: center; color: #666;">Dépôt Mobile Money sur :<br><b style="color:var(--primary);">77 19 88 28</b> ou <b style="color:var(--primary);">60 44 74 44</b></p>
+            
+            <div style="margin-top: 15px;">
+                <div class="pricing-card selected" onclick="selectionnerFormule('1 Trimestre', 600, this)"><b>1 Trimestre</b> - 600 FCFA</div>
+                <div class="pricing-card" onclick="selectionnerFormule('Annuel', 1500, this)"><b>Annuel (1 An)</b> - 1 500 FCFA</div>
+            </div>
+
+            <div class="form-group"><label>Opérateur</label>
+                <select id="aboOperateur"><option value="Orange Money">Orange Money</option><option value="Moov Money">Moov Money</option><option value="Wave">Wave</option></select>
+            </div>
+            <div class="form-group"><label>Téléphone émetteur</label><input type="text" id="aboTelEmetteur" placeholder="Ex: 70000000"></div>
+            <div class="form-group"><label>Référence de transaction</label><input type="text" id="aboCodeOtp" placeholder="ID de transaction"></div>
+
+            <button onclick="soumettreDemandeAbonnement()">Soumettre ma preuve</button>
+            <button class="btn-secondary" onclick="fermerModalAbonnement()" style="margin-top: 5px;">Fermer</button>
+        </div>
+    </div>
+
+    <!-- MODALE ADMIN -->
+    <div id="adminComptesModal" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); display:flex; justify-content:center; align-items:center; z-index:1000;">
+        <div style="background:#ffffff; padding:25px; border-radius:12px; width:90%; max-width:750px; border:1px solid var(--border); max-height: 90vh; overflow-y: auto;">
+            <h3>Administration des Comptes & Délais d'Expiration</h3>
+            <div id="authHamaContainer">
+                <div class="form-group"><label>Code d'accès </label><input type="password" id="hamaCodeInput" placeholder="Code secret"></div>
+                <button onclick="verifierCodeHama()">Valider</button>
+                <button class="btn-secondary" onclick="fermerModalAdminAuth()" style="margin-top:5px;">Fermer</button>
+            </div>
+            <div id="contentHamaContainer" class="hidden">
+                <table>
+                    <thead><tr><th>Utilisateur</th><th>Abonnement & Preuve</th><th>Délai d'expiration personnalisé</th><th>Actions</th></tr></thead>
+                    <tbody id="listeComptesAdminTable"></tbody>
+                </table>
+                <button class="btn-secondary" onclick="fermerModalAdminAuth()" style="margin-top:15px;">Fermer / Quitter</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- APPLICATION PRINCIPALE -->
+    <div id="appSection" class="hidden">
+        <div class="user-bar">
+            <span id="userInfoDisplay"></span>
+            <div style="display:flex; gap:10px;">
+                <button style="width: auto; padding: 6px 12px; background: #e2e2dc; color: var(--text-main);" onclick="ouvrirModalChangementPassword()">🔑 Modifier mot de passe</button>
+                <button style="width: auto; padding: 6px 12px; background: #fed7d7; color: #9b2c2c;" onclick="deconnecter()">Déconnexion</button>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <button onclick="afficherOnglet('configMatieresTab')">1. Matières</button>
+            <button onclick="afficherOnglet('configClassesTab')">2. Classes</button>
+            <button onclick="afficherOnglet('eleveTab')">3. Élèves</button>
+            <button onclick="afficherOnglet('notesTab')">4. Saisie Notes</button>
+            <button onclick="afficherOnglet('bilanTab')">5. Bilans</button>
+        </div>
+
+        <!-- ONGLET 1 -->
+        <div id="configMatieresTab" class="onglet">
+            <h3>Répertoire des Matières</h3>
+            <div class="form-group"><label>Nom de la matière</label><input type="text" id="nomMatiere" placeholder="Ex: Mathématiques"></div>
+            <div class="form-group"><label>Barème</label><input type="number" id="baremeMatiere" value="10"></div>
+            <button onclick="ajouterMatiereGlobale()">Enregistrer la matière</button>
+            <table><thead><tr><th>Matière</th><th>Barème</th><th>Action</th></tr></thead><tbody id="listeMatieresGlobaleTable"></tbody></table>
+        </div>
+
+        <!-- ONGLET 2 -->
+        <div id="configClassesTab" class="onglet hidden">
+            <h3>Classes & Matières Associées</h3>
+            <div class="form-group"><label>Nom de la classe</label><input type="text" id="nomClasseConfig" placeholder="Ex: 6ème A"></div>
+            <fieldset><legend>Sélectionner les matières</legend><div id="checkboxMatieresContainer"></div></fieldset>
+            <button onclick="enregistrerClasse()">Enregistrer la classe</button>
+            <table><thead><tr><th>Classe</th><th>Matières assignées</th><th>Action</th></tr></thead><tbody id="listeClassesTable"></tbody></table>
+        </div>
+
+        <!-- ONGLET 3 -->
+        <div id="eleveTab" class="onglet hidden">
+            <h3>Gestion des Élèves</h3>
+            <div class="form-group"><label>Nom</label><input type="text" id="eleveNom" placeholder="Nom de famille"></div>
+            <div class="form-group"><label>Prénom</label><input type="text" id="elevePrenom" placeholder="Prénom"></div>
+            <div class="form-group"><label>Sexe</label><select id="eleveSexe"><option value="M">Masculin</option><option value="F">Féminin</option></select></div>
+            <div class="form-group"><label>Date de naissance</label><input type="date" id="eleveDateNais"></div>
+            <div class="form-group"><label>Lieu de naissance</label><input type="text" id="eleveLieuNais" placeholder="Ex: Ouagadougou"></div>
+            <div class="form-group"><label>Nom et Prénom du père</label><input type="text" id="elevePere" placeholder="Nom du père"></div>
+            <div class="form-group"><label>Nom et Prénom de la mère</label><input type="text" id="eleveMere" placeholder="Nom de la mère"></div>
+            <div class="form-group"><label>Contact d'un des parents</label><input type="text" id="eleveContact" placeholder="Ex: 70000000"></div>
+            <div class="form-group"><label>Classe</label><select id="eleveClasseSelect"><option value="">-- Choisir une classe --</option></select></div>
+            <button onclick="enregistrerEleve()">Enregistrer l'élève</button>
+            <table><thead><tr><th>Nom & Prénom</th><th>Sexe</th><th>Classe</th><th>Contact</th><th>Action</th></tr></thead><tbody id="listeElevesTable"></tbody></table>
+        </div>
+
+        <!-- ONGLET 4 -->
+        <div id="notesTab" class="onglet hidden">
+            <h3>Saisie des Notes</h3>
+            <div class="row-filters">
+                <div class="form-group">
+                    <label>Trimestre</label>
+                    <select id="selectTrimestreNotes" onchange="chargerGrilleNotes()">
+                        <option value="T1">Trimestre 1</option>
+                        <option value="T2">Trimestre 2</option>
+                        <option value="T3">Trimestre 3</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Sélectionner la classe</label>
+                    <select id="selectClasseNotes" onchange="chargerMatieresEtElevesNotes()">
+                        <option value="">-- Choisir --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Sélectionner la matinée (ou période)</label>
+                    <select id="selectMatineeNotes">
+                        <option value="Matinée">Matinée</option>
+                        <option value="Soirée">Soirée / Journée complète</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Sélectionner la matière</label>
+                <select id="selectMatiereNotes" onchange="chargerGrilleNotes()">
+                    <option value="">-- Choisir --</option>
+                </select>
+            </div>
+            <div id="grilleNotesContainer"></div>
+            <button onclick="enregistrerNotes()" style="margin-top:15px;">Enregistrer les notes</button>
+        </div>
+
+        <!-- ONGLET 5 -->
+        <div id="bilanTab" class="onglet hidden">
+            <h3>Génération des Bilans (Trimestriels & Annuel)</h3>
+            <div class="row-filters">
+                <div class="form-group">
+                    <label>Période</label>
+                    <select id="bilanPeriodeSelect" onchange="rafraichirListesBilanSelector()">
+                        <option value="T1">Trimestre 1</option>
+                        <option value="T2">Trimestre 2</option>
+                        <option value="T3">Trimestre 3</option>
+                        <option value="Annuel">Bilan Annuel</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Classe</label>
+                    <select id="bilanClasseSelect" onchange="chargerElevesBilan()">
+                        <option value="">-- Choisir --</option>
+                    </select>
+                </div>
+            </div>
+            <div id="bilanEleveWrapper" class="form-group">
+                <label>Élève (Optionnel pour Bilan de Classe Global)</label>
+                <select id="bilanEleveSelect"><option value="">-- Tous les élèves (Bilan de Classe) --</option></select>
+            </div>
+            <div style="display:flex; gap:10px; flex-wrap: wrap;">
+                <button onclick="genererBilan()">Afficher le Bilan / Bulletin</button>
+                <button class="btn-secondary" onclick="afficherTableauSynoptiqueGlobal()" style="background:#f3ebff; color:var(--primary);">📊 Tableau Synoptique de la Classe</button>
+            </div>
+            <div id="affichageBilan" style="background:#ffffff; padding:20px; border-radius:8px; margin-top:20px; border:1px solid var(--border); overflow-x: auto;"></div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    let utilisateurActif = null;
+    let modeInscription = false;
+    let formuleSelectionnee = { nom: '1 Trimestre', montant: 600 };
+    let donneesApp = { utilisateurs: [], matieresGlobales: [], classes: [], eleves: [], notes: [] };
+
+    function chargerDonneesLocal() {
+        let data = localStorage.getItem('gestionScolaireDonnees');
+        if (data) {
+            try {
+                donneesApp = JSON.parse(data);
+            } catch (e) {
+                console.error("Erreur de lecture locale", e);
+            }
+        }
+    }
+
+    function sauvegarderDonneesLocal() {
+        localStorage.setItem('gestionScolaireDonnees', JSON.stringify(donneesApp));
+    }
+
+    function init() {
+    chargerDonneesLocal();
+    if (!donneesApp.utilisateurs) donneesApp.utilisateurs = [];
+    if (!donneesApp.notes) donneesApp.notes = [];
+    if (!donneesApp.eleves) donneesApp.eleves = [];
+    if (!donneesApp.classes) donneesApp.classes = [];
+    if (!donneesApp.matieresGlobales) donneesApp.matieresGlobales = [];
+}
+init();
+
+// Écoute en temps réel de la Realtime Database pour synchroniser les utilisateurs
+window.rtdbOnValue(window.rtdbRef(window.db, "utilisateurs"), (snapshot) => {
+  const data = snapshot.val();
+  if (data) {
+    donneesApp.utilisateurs = Object.keys(data).map(key => ({
+      firebaseId: key,
+      ...data[key]
+    }));
+  } else {
+    donneesApp.utilisateurs = [];
+  }
+  sauvegarderDonneesLocal();
+  if (typeof rafraichirInterface === 'function') {
+    rafraichirInterface();
+  }
+});
+    function basculerVisibilitePassword(id, el) {
+        let input = document.getElementById(id);
+        if (input.type === "password") { input.type = "text"; el.textContent = "🔒"; }
+        else { input.type = "password"; el.textContent = "👁️"; }
+    }
+
+    function basculerInscription() {
+        modeInscription = !modeInscription;
+        let title = document.getElementById('authTitle');
+        let btn = document.getElementById('btnActionAuth');
+        let btnInsc = document.getElementById('btnModeInsc');
+        let groupAdmin = document.getElementById('codeAdminInscriptionGroup');
+
+        if (modeInscription) {
+            title.textContent = "Créer un compte";
+            btn.textContent = "S'inscrire";
+            btnInsc.textContent = "Déjà un compte ? Se connecter";
+            groupAdmin.classList.remove('hidden');
+        } else {
+            title.textContent = "Connexion";
+            btn.textContent = "Se connecter";
+            btnInsc.textContent = "Créer un compte / S'inscrire";
+            groupAdmin.classList.add('hidden');
+        }
+    }
+
+    function gererConnexion() {
+        chargerDonneesLocal();
+        let user = document.getElementById('authUser').value.trim();
+        let pass = document.getElementById('authPass').value.trim();
+
+        if (!user || !pass) { alert("Veuillez remplir tous les champs."); return; }
+
+        if (modeInscription) {
+            let codeAdmin = document.getElementById('codeAdminInsc').value.trim();
+            if (codeAdmin !== "noma7719") { alert("Code admin d'inscription incorrect."); return; }
+            if (donneesApp.utilisateurs.some(u => u.username === user)) { alert("Ce nom d'utilisateur existe déjà."); return; }
+
+            donneesApp.utilisateurs.push({ username: user, password: pass, abonnement: "Aucun", statut: "en_attente", expireAt: null });
+            sauvegarderDonneesLocal();
+            alert("Compte créé avec succès ! Veuillez procéder au paiement de votre abonnement.");
+            basculerInscription();
+        } else {
+            let u = donneesApp.utilisateurs.find(x => x.username === user && x.password === pass);
+            if (u) {
+                if (user !== "hama7719") {
+                    if (u.statut !== "valide") {
+                        alert("Votre compte est en attente de validation de l'abonnement par l'administrateur.");
+                        return;
+                    }
+                    if (u.expireAt && Date.now() > u.expireAt) {
+                        alert("Votre abonnement a expiré. Veuillez contacter l'administrateur pour le renouveler.");
+                        return;
+                    }
+                }
+                utilisateurActif = u;
+                document.getElementById('authSection').classList.add('hidden');
+                document.getElementById('appSection').classList.remove('hidden');
+                document.getElementById('userInfoDisplay').innerHTML = `Connecté : <b>${u.username}</b>`;
+                rafraichirInterface();
+            } else {
+                alert("Identifiants incorrects ou compte non validé.");
+            }
+        }
+    }
+
+    function deconnecter() {
+        utilisateurActif = null;
+        document.getElementById('appSection').classList.add('hidden');
+        document.getElementById('authSection').classList.remove('hidden');
+    }
+
+    function ouvrirModalChangementPassword() {
+        document.getElementById('modalChangementPassword').classList.remove('hidden');
+        if (utilisateurActif) {
+            document.getElementById('pwdUser').value = utilisateurActif.username;
+            document.getElementById('pwdUser').disabled = true;
+        } else {
+            document.getElementById('pwdUser').value = "";
+            document.getElementById('pwdUser').disabled = false;
+        }
+        document.getElementById('pwdAncien').value = "";
+        document.getElementById('pwdNouveau').value = "";
+    }
+
+    function fermerModalChangementPassword() {
+        document.getElementById('modalChangementPassword').classList.add('hidden');
+    }
+
+    
+    // La fonction doit obligatoirement commencer par 'async'
+function soumettreDemandeAbonnement() {
+  let tel = document.getElementById('aboTelemuteur').value.trim();
+  let refTx = document.getElementById('aboCodeOtp').value.trim();
+  let userField = document.getElementById('authUser');
+  let user = userField ? userField.value.trim() : "Utilisateur";
+
+  if (!tel || !refTx) {
+    alert("Veuillez renseigner le téléphone et la référence.");
+    return;
+  }
+
+  // Envoi direct et instantané dans Firebase Realtime Database
+  window.rtdbSet(window.rtdbRef(window.db, "utilisateurs/" + user), {
+    username: user,
+    statut: "en_attente",
+    paiement: `Tél: ${tel} - Réf: ${refTx}`,
+    dateSoumission: new Date().toISOString()
+  });
+
+  alert("Preuve soumise avec succès !");
+  fermerModalAbonnement();
+}
+
+    function ouvrirModalAdminAuth() { document.getElementById('adminComptesModal').classList.remove('hidden'); }
+    function fermerModalAdminAuth() {
+        document.getElementById('adminComptesModal').classList.add('hidden');
+        document.getElementById('authHamaContainer').classList.remove('hidden');
+        document.getElementById('contentHamaContainer').classList.add('hidden');
+        document.getElementById('hamaCodeInput').value = "";
+        chargerDonneesLocal();
+    }
+
+    function verifierCodeHama() {
+        let code = document.getElementById('hamaCodeInput').value.trim();
+        if (code === "hama7719") {
+            document.getElementById('authHamaContainer').classList.add('hidden');
+            document.getElementById('contentHamaContainer').classList.remove('hidden');
+            chargerDonneesLocal();
+            let tbody = document.getElementById('listeComptesAdminTable');
+            tbody.innerHTML = "";
+            (donneesApp.utilisateurs || []).forEach((u, idx) => {
+                let expirationStr = "Aucune expiration définie";
+                if (u.expireAt) {
+                    let dateExp = new Date(u.expireAt);
+                    let diffMs = u.expireAt - Date.now();
+                    if (diffMs > 0) {
+                        let joursRestants = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+                        let heuresRestantes = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        expirationStr = `<span style="color:#2f855a;">Expire le : ${dateExp.toLocaleString()} <br>(Reste : ${joursRestants}j ${heuresRestantes}h)</span>`;
+                    } else {
+                        expirationStr = `<span style="color:#c53030;">Expiré le : ${dateExp.toLocaleString()}</span>`;
+                    }
+                }
+
+                tbody.innerHTML += `<tr>
+                    <td><b>${u.username}</b><br><small>Statut: ${u.statut}</small></td>
+                    <td>${u.abonnement || 'Aucun'}</td>
+                    <td>
+                        ${expirationStr}
+                        <div style="display:flex; gap:5px; margin-top:8px;">
+                            <input type="number" id="valDelai_${idx}" placeholder="Qté" style="width:70px; padding:6px;" value="30">
+                            <select id="uniteDelai_${idx}" style="padding:6px; width:100px;">
+                                <option value="jours">Jours</option>
+                                <option value="heures">Heures</option>
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        <button class="btn-secondary" style="background:#2f855a; padding:8px; color:#fff; margin-bottom:4px;" onclick="validerAbonnementAdmin(${idx})">Valider & Appliquer</button>
+                        <button class="btn-secondary" style="background:#c53030; padding:8px; color:#fff;" onclick="revoquerAbonnementAdmin(${idx})">Révoquer</button>
+                    </td>
+                </tr>`;
+            });
+        } else {
+            alert("Code secret incorrect !");
+        }
+    }
+
+    function validerAbonnement(userId, selectJoursId) {
+  let select = document.getElementById(selectJoursId);
+  let jours = select ? select.value : "30";
+
+  // Mise à jour directe du statut et de la durée sur Firebase
+  window.rtdbSet(window.rtdbRef(window.db, "utilisateurs/" + userId + "/statut"), "validé");
+  window.rtdbSet(window.rtdbRef(window.db, "utilisateurs/" + userId + "/delai"), jours + " Jours");
+
+  alert(`Abonnement validé avec un délai de ${jours} jours !`);
+}
+
+    function revoquerAbonnementAdmin(idx) {
+        donneesApp.utilisateurs[idx].statut = "revoque";
+        donneesApp.utilisateurs[idx].expireAt = Date.now();
+        sauvegarderDonneesLocal();
+        alert("Abonnement révoqué.");
+        verifierCodeHama();
+    }
+
+    function afficherOnglet(id) {
+        document.querySelectorAll('.onglet').forEach(o => o.classList.add('hidden'));
+        document.getElementById(id).classList.remove('hidden');
+        rafraichirInterface();
+    }
+
+    function ajouterMatiereGlobale() {
+        let nom = document.getElementById('nomMatiere').value.trim();
+        let bareme = Number(document.getElementById('baremeMatiere').value);
+        if (!nom) return;
+        if(!donneesApp.matieresGlobales) donneesApp.matieresGlobales = [];
+        donneesApp.matieresGlobales.push({ nom, bareme });
+        sauvegarderDonneesLocal();
+        document.getElementById('nomMatiere').value = "";
+        rafraichirInterface();
+    }
+
+    function supprimerMatiereGlobale(index) {
+        donneesApp.matieresGlobales.splice(index, 1);
+        sauvegarderDonneesLocal();
+        rafraichirInterface();
+    }
+
+    function enregistrerClasse() {
+        let nomClasse = document.getElementById('nomClasseConfig').value.trim();
+        if (!nomClasse) return;
+        let matieresChoisies = [];
+        document.querySelectorAll('.chk-matiere:checked').forEach(chk => {
+            matieresChoisies.push({ nom: chk.value, bareme: Number(chk.getAttribute('data-bareme')) });
+        });
+        if(!donneesApp.classes) donneesApp.classes = [];
+        let existing = donneesApp.classes.find(c => c.nom === nomClasse);
+        if (existing) { existing.matieres = matieresChoisies; }
+        else { donneesApp.classes.push({ nom: nomClasse, matieres: matieresChoisies }); }
+        sauvegarderDonneesLocal();
+        rafraichirInterface();
+    }
+
+    function enregistrerEleve() {
+        let nom = document.getElementById('eleveNom').value.trim();
+        let prenom = document.getElementById('elevePrenom').value.trim();
+        let sexe = document.getElementById('eleveSexe').value;
+        let dateNais = document.getElementById('eleveDateNais').value;
+        let lieuNais = document.getElementById('eleveLieuNais').value.trim();
+        let pere = document.getElementById('elevePere').value.trim();
+        let mere = document.getElementById('eleveMere').value.trim();
+        let contact = document.getElementById('eleveContact').value.trim();
+        let classe = document.getElementById('eleveClasseSelect').value;
+
+        if (!nom || !classe) { alert("Nom et classe obligatoires"); return; }
+        if(!donneesApp.eleves) donneesApp.eleves = [];
+        donneesApp.eleves.push({ id: Date.now(), nom, prenom, sexe, dateNais, lieuNais, pere, mere, contact, classe });
+        sauvegarderDonneesLocal();
+        
+        document.getElementById('eleveNom').value = "";
+        document.getElementById('elevePrenom').value = "";
+        document.getElementById('eleveLieuNais').value = "";
+        document.getElementById('elevePere').value = "";
+        document.getElementById('eleveMere').value = "";
+        document.getElementById('eleveContact').value = "";
+        rafraichirInterface();
+    }
+
+    function supprimerEleve(index) {
+        donneesApp.eleves.splice(index, 1);
+        sauvegarderDonneesLocal();
+        rafraichirInterface();
+    }
+
+    function rafraichirInterface() {
+        let tMat = document.getElementById('listeMatieresGlobaleTable');
+        tMat.innerHTML = "";
+        (donneesApp.matieresGlobales || []).forEach((m, i) => {
+            tMat.innerHTML += `<tr><td>${m.nom}</td><td>${m.bareme}</td><td><button class="btn-secondary" onclick="supprimerMatiereGlobale(${i})">X</button></td></tr>`;
+        });
+
+        let chkContainer = document.getElementById('checkboxMatieresContainer');
+        chkContainer.innerHTML = "";
+        (donneesApp.matieresGlobales || []).forEach(m => {
+            chkContainer.innerHTML += `<label><input type="checkbox" class="chk-matiere" value="${m.nom}" data-bareme="${m.bareme}"> ${m.nom} (Barème: ${m.bareme})</label><br>`;
+        });
+
+        let tClass = document.getElementById('listeClassesTable');
+        tClass.innerHTML = "";
+        let selectClasseEleve = document.getElementById('eleveClasseSelect');
+        let selectClasseNotes = document.getElementById('selectClasseNotes');
+        let bilanClasseSelect = document.getElementById('bilanClasseSelect');
+
+        selectClasseEleve.innerHTML = `<option value="">-- Choisir une classe --</option>`;
+        selectClasseNotes.innerHTML = `<option value="">-- Choisir une classe --</option>`;
+        bilanClasseSelect.innerHTML = `<option value="">-- Choisir une classe --</option>`;
+        
+        (donneesApp.classes || []).forEach(c => {
+            let opt = `<option value="${c.nom}">${c.nom}</option>`;
+            selectClasseEleve.innerHTML += opt;
+            selectClasseNotes.innerHTML += opt;
+            bilanClasseSelect.innerHTML += opt;
+
+            let mats = (c.matieres || []).map(mat => `${mat.nom} (${mat.bareme})`).join(', ');
+            tClass.innerHTML += `<tr><td>${c.nom}</td><td>${mats || 'Aucune'}</td><td>-</td></tr>`;
+        });
+
+        let tEleves = document.getElementById('listeElevesTable');
+        tEleves.innerHTML = "";
+        (donneesApp.eleves || []).forEach((e, i) => {
+            let isFem = e.sexe === 'F';
+            let rowClass = isFem ? 'line-female' : '';
+            tEleves.innerHTML += `<tr class="${rowClass}"><td>${e.nom} ${e.prenom}</td><td><span class="${isFem ? 'col-female' : ''}"><b>${e.sexe}</b></span></td><td>${e.classe}</td><td>${e.contact || '-'}</td><td><button class="btn-secondary" onclick="supprimerEleve(${i})">X</button></td></tr>`;
+        });
+    }
+
+    function chargerMatieresEtElevesNotes() {
+        let classeNom = document.getElementById('selectClasseNotes').value;
+        let selectMat = document.getElementById('selectMatiereNotes');
+        selectMat.innerHTML = `<option value="">-- Choisir --</option>`;
+        if (!classeNom) return;
+
+        let classeObj = donneesApp.classes.find(c => c.nom === classeNom);
+        if (classeObj && classeObj.matieres) {
+            let matTriees = [...classeObj.matieres].sort((a,b) => a.nom.localeCompare(b.nom));
+            matTriees.forEach(m => {
+                selectMat.innerHTML += `<option value="${m.nom}">${m.nom} (Barème ${m.bareme})</option>`;
+            });
+        }
+        chargerGrilleNotes();
+    }
+
+    function chargerGrilleNotes() {
+        let classeNom = document.getElementById('selectClasseNotes').value;
+        let matiereNom = document.getElementById('selectMatiereNotes').value;
+        let trimestre = document.getElementById('selectTrimestreNotes').value;
+        let container = document.getElementById('grilleNotesContainer');
+        container.innerHTML = "";
+
+        if (!classeNom || !matiereNom) return;
+
+        let classeObj = donneesApp.classes.find(c => c.nom === classeNom);
+        let matiereObj = classeObj ? classeObj.matieres.find(m => m.nom === matiereNom) : null;
+        let baremeMax = matiereObj ? matiereObj.bareme : 10;
+
+        let elevesClasse = (donneesApp.eleves || []).filter(e => e.classe === classeNom);
+        if (elevesClasse.length === 0) {
+            container.innerHTML = "<p style='color:#666;'>Aucun élève dans cette classe.</p>";
+            return;
+        }
+
+        let html = `<table><thead><tr><th>Nom & Prénom</th><th>Sexe</th><th>Note (${trimestre}) / Barème ${baremeMax}</th></tr></thead><tbody>`;
+        elevesClasse.forEach(el => {
+            let isFem = el.sexe === 'F';
+            let rowClass = isFem ? 'line-female' : '';
+            let existingNote = donneesApp.notes.find(n => n.eleveId === el.id && n.matiere === matiereNom && n.trimestre === trimestre);
+            let val = existingNote ? existingNote.note : "";
+            html += `<tr class="${rowClass}"><td>${el.nom} ${el.prenom}</td><td><span class="${isFem ? 'col-female' : ''}"><b>${el.sexe}</b></span></td><td><input type="number" step="0.25" min="0" max="${baremeMax}" class="input-note" data-eleve-id="${el.id}" data-bareme="${baremeMax}" value="${val}" oninput="validerMaxNote(this)"></td></tr>`;
+        });
+        html += `</tbody></table>`;
+        container.innerHTML = html;
+    }
+
+    function validerMaxNote(input) {
+        let max = parseFloat(input.getAttribute('data-bareme')) || 10;
+        let val = parseFloat(input.value);
+        if (!isNaN(val) && val > max) {
+            alert(`La note ne peut pas être supérieure au barème (${max}).`);
+            input.value = max;
+        }
+        if (!isNaN(val) && val < 0) {
+            input.value = 0;
+        }
+    }
+
+    function enregistrerNotes() {
+        let matiereNom = document.getElementById('selectMatiereNotes').value;
+        let trimestre = document.getElementById('selectTrimestreNotes').value;
+        if (!matiereNom) { alert("Veuillez sélectionner une matière."); return; }
+
+        let echecs = false;
+        document.querySelectorAll('.input-note').forEach(input => {
+            let max = parseFloat(input.getAttribute('data-bareme')) || 10;
+            let noteVal = parseFloat(input.value);
+            if (!isNaN(noteVal) && noteVal > max) {
+                echecs = true;
+            }
+        });
+
+        if (echecs) {
+            alert("Erreur : Certaines notes dépassent le barème autorisé !");
+            return;
+        }
+
+        document.querySelectorAll('.input-note').forEach(input => {
+            let eleveId = Number(input.getAttribute('data-eleve-id'));
+            let noteVal = parseFloat(input.value);
+
+            let index = donneesApp.notes.findIndex(n => n.eleveId === eleveId && n.matiere === matiereNom && n.trimestre === trimestre);
+            if (!isNaN(noteVal)) {
+                if (index !== -1) {
+                    donneesApp.notes[index].note = noteVal;
+                } else {
+                    donneesApp.notes.push({ eleveId, matiere: matiereNom, trimestre, note: noteVal });
+                }
+            }
+        });
+
+        sauvegarderDonneesLocal();
+        alert("Notes enregistrées avec succès !");
+    }
+
+    function chargerElevesBilan() {
+        let classeNom = document.getElementById('bilanClasseSelect').value;
+        let selectEl = document.getElementById('bilanEleveSelect');
+        selectEl.innerHTML = `<option value="">-- Tous les élèves (Bilan de Classe) --</option>`;
+        if (!classeNom) return;
+
+        let elevesClasse = (donneesApp.eleves || []).filter(e => e.classe === classeNom);
+        elevesClasse.forEach(el => {
+            selectEl.innerHTML += `<option value="${el.id}">${el.nom} ${el.prenom}</option>`;
+        });
+    }
+
+    function rafraichirListesBilanSelector() {
+        chargerElevesBilan();
+    }
+
+    function obtenirObservationTrimestre(moy) {
+        if (moy >= 9) return "Excellent";
+        if (moy >= 8) return "Très bien";
+        if (moy >= 7) return "Bien";
+        if (moy >= 6) return "Assez bien";
+        if (moy >= 5) return "Passable";
+        if (moy >= 2.5) return "Insuffisant";
+        return "Très insuffisant";
+    }
+
+    function obtenirObservationAnnuel(moy) {
+        if (moy >= 10) return "Passe";
+        return "Redouble";
+    }
+
+    function calculerResultatsClasse(classeNom, periode) {
+        let elevesClasse = donneesApp.eleves.filter(e => e.classe === classeNom);
+        let classeObj = donneesApp.classes.find(c => c.nom === classeNom);
+        if (!classeObj || elevesClasse.length === 0) return [];
+
+        let matieresTriees = [...(classeObj.matieres || [])].sort((a,b) => a.nom.localeCompare(b.nom));
+
+        let resultats = elevesClasse.map(el => {
+            let totalPoints = 0;
+            let totalBaremes = 0;
+            let notesParMatiere = {};
+
+            if (periode === 'Annuel') {
+                matieresTriees.forEach(mat => {
+                    let sommeMatiereAnnuelle = 0;
+                    let countTrim = 0;
+                    ['T1', 'T2', 'T3'].forEach(trim => {
+                        let noteObj = donneesApp.notes.find(n => n.eleveId === el.id && n.matiere === mat.nom && n.trimestre === trim);
+                        if (noteObj) {
+                            sommeMatiereAnnuelle += Number(noteObj.note);
+                            countTrim++;
+                        }
+                    });
+                    let noteMoyMat = countTrim > 0 ? (sommeMatiereAnnuelle / countTrim) : null;
+                    notesParMatiere[mat.nom] = noteMoyMat;
+                    if (noteMoyMat !== null) {
+                        totalPoints += noteMoyMat;
+                        totalBaremes += Number(mat.bareme);
+                    }
+                });
+            } else {
+                matieresTriees.forEach(mat => {
+                    let noteObj = donneesApp.notes.find(n => n.eleveId === el.id && n.matiere === mat.nom && n.trimestre === periode);
+                    let noteVal = noteObj ? Number(noteObj.note) : null;
+                    notesParMatiere[mat.nom] = noteVal;
+                    if (noteVal !== null) {
+                        totalPoints += noteVal;
+                        totalBaremes += Number(mat.bareme);
+                    }
+                });
+            }
+
+            let moyenneSur10 = totalBaremes > 0 ? Number(((totalPoints / totalBaremes) * 10).toFixed(2)) : 0;
+            let observation = (periode === 'Annuel') ? obtenirObservationAnnuel(moyenneSur10) : obtenirObservationTrimestre(moyenneSur10);
+
+            let aCompose = totalBaremes > 0;
+
+            return {
+                id: el.id,
+                nomComplet: `${el.nom} ${el.prenom}`,
+                sexe: el.sexe,
+                notesParMatiere,
+                totalPoints,
+                totalBaremes,
+                moyenneSur10,
+                observation,
+                aCompose
+            };
+        });
+
+        resultats.sort((a, b) => b.moyenneSur10 - a.moyenneSur10);
+        return resultats.map((res, index) => ({ ...res, rang: index + 1 }));
+    }
+
+    function genererBilan() {
+        let eleveId = Number(document.getElementById('bilanEleveSelect').value);
+        let classeNom = document.getElementById('bilanClasseSelect').value;
+        let periode = document.getElementById('bilanPeriodeSelect').value;
+        let container = document.getElementById('affichageBilan');
+
+        if (!classeNom) { alert("Veuillez sélectionner une classe."); return; }
+
+        let classe = donneesApp.classes.find(c => c.nom === classeNom);
+        if (!classe) return;
+
+        let resultatsClasse = calculerResultatsClasse(classeNom, periode);
+        let matieresTriees = [...(classe.matieres || [])].sort((a,b) => a.nom.localeCompare(b.nom));
+
+        // 1. BILAN DE CLASSE GLOBAL
+        if (!eleveId) {
+            let html = `<h4>BILAN GLOBAL DE CLASSE - ${periode.toUpperCase()} (${classe.nom})</h4>`;
+            html += `<table><thead><tr><th>Rang</th><th>Nom & Prénom</th><th>Sexe</th>`;
+            matieresTriees.forEach(m => { html += `<th>${m.nom} (${m.bareme})</th>`; });
+            html += `<th>Total</th><th>Moy. /10</th><th>Observations</th></tr></thead><tbody>`;
+
+            resultatsClasse.forEach(res => {
+                let isFem = res.sexe === 'F';
+                let rowClass = isFem ? 'line-female' : '';
+                html += `<tr class="${rowClass}"><td><b>${res.rang}</b></td><td style="text-align:left; font-weight:bold;">${res.nomComplet}</td><td><span class="${isFem ? 'col-female' : ''}"><b>${res.sexe}</b></span></td>`;
+                matieresTriees.forEach(mat => {
+                    let val = res.notesParMatiere[mat.nom];
+                    html += `<td>${val !== null && val !== undefined ? val : '-'}</td>`;
+                });
+                html += `<td>${res.totalPoints.toFixed(2)} / ${res.totalBaremes}</td><td><b>${res.moyenneSur10}</b></td><td>${res.observation}</td></tr>`;
+            });
+            html += `</tbody></table>`;
+            html += `<button onclick="window.print()" style="margin-top:20px; background:#48bb78; color:#ffffff;">🖨️ Imprimer ce Bilan</button>`;
+            container.innerHTML = html;
+            return;
+        }
+
+        // 2. BULLETIN INDIVIDUEL (SANS COLONNE BARÈME)
+        let eleve = donneesApp.eleves.find(e => e.id === eleveId);
+        let eleveRes = resultatsClasse.find(r => r.id === eleveId);
+        let effectif = resultatsClasse.length;
+
+        if (!eleve || !eleveRes) return;
+
+        let isFem = eleve.sexe === 'F';
+        let rowClass = isFem ? 'line-female' : '';
+
+        let html = `<div id="imprimeZone">`;
+        html += `<h4>BULLETIN SCOLAIRE - ${periode.toUpperCase()}</h4>`;
+        html += `<p><b>Élève :</b> ${eleve.nom} ${eleve.prenom} | <b>Sexe :</b> <span class="${isFem ? 'col-female' : ''}"><b>${eleve.sexe}</b></span> | <b>Né(e) le :</b> ${eleve.dateNais || '-'} à ${eleve.lieuNais || '-'}</p>`;
+        html += `<p><b>Parents :</b> Père: ${eleve.pere || '-'} | Mère: ${eleve.mere || '-'} | <b>Contact :</b> ${eleve.contact || '-'}</p>`;
+        html += `<p><b>Classe :</b> ${classe.nom}</p>`;
+
+        // Tableau vertical SANS barème
+        html += `<table><thead><tr><th>Matières (Triées alphabétiquement)</th><th>Note Obtenue</th></tr></thead><tbody>`;
+        matieresTriees.forEach(mat => {
+            let val = eleveRes.notesParMatiere[mat.nom];
+            html += `<tr><td style="text-align:left; font-weight:bold;">${mat.nom}</td><td><b>${val !== null && val !== undefined ? val : '-'}</b></td></tr>`;
+        });
+        html += `</tbody></table>`;
+
+        // Récapitulatif Bas de bulletin
+        html += `<table style="margin-top:15px;"><thead><tr><th>Total Points</th><th>Moyenne sur 10</th><th>Rang</th><th>Observations</th></tr></thead><tbody>`;
+        html += `<tr><td>${eleveRes.totalPoints.toFixed(2)} / ${eleveRes.totalBaremes}</td><td><b style="font-size:16px; color:var(--primary);">${eleveRes.moyenneSur10} / 10</b></td><td><b>${eleveRes.rang} / ${effectif}</b></td><td><b>${eleveRes.observation}</b></td></tr>`;
+        html += `</tbody></table></div>`;
+
+        html += `<button onclick="window.print()" style="margin-top:20px; background:#48bb78; color:#ffffff;">🖨️ Imprimer ce Bulletin</button>`;
+        container.innerHTML = html;
+    }
+
+    function afficherTableauSynoptiqueGlobal() {
+        let classeNom = document.getElementById('bilanClasseSelect').value;
+        let periode = document.getElementById('bilanPeriodeSelect').value;
+        let container = document.getElementById('affichageBilan');
+
+        if (!classeNom) { alert("Veuillez sélectionner une classe."); return; }
+
+        let classe = donneesApp.classes.find(c => c.nom === classeNom);
+        if (!classe) return;
+
+        let resultatsClasse = calculerResultatsClasse(classeNom, periode);
+        let matieresTriees = [...(classe.matieres || [])].sort((a,b) => a.nom.localeCompare(b.nom));
+
+        let html = `<h4 style="color:var(--primary);">Tableau Synoptique & Indicateurs - ${periode.toUpperCase()} (Classe : ${classe.nom})</h4>`;
+        
+        // TABLEAU SYNOPTIQUE UNIQUE HORIZONTAL AVEC G, F, T POUR CHAQUE MATIÈRE ET POUR LE TOTAL
+        html += `<table><thead>`;
+        html += `<tr><th rowspan="2" style="vertical-align:middle;">Statistiques & Indicateurs</th>`;
+        matieresTriees.forEach(m => {
+            html += `<th colspan="3">${m.nom}</th>`;
+        });
+        html += `<th colspan="3">Total Général</th>`;
+        html += `</tr>`;
+        html += `<tr>`;
+        matieresTriees.forEach(() => {
+            html += `<th>G</th><th class="col-female">F</th><th>T</th>`;
+        });
+        html += `<th>G</th><th class="col-female">F</th><th>T</th>`;
+        html += `</tr>`;
+        html += `</thead><tbody>`;
+
+        // 1. Ayant composé
+        html += `<tr><td style="text-align:left; font-weight:bold;">Ayant composé</td>`;
+        matieresTriees.forEach(mat => {
+            let g = resultatsClasse.filter(r => r.sexe === 'M' && r.notesParMatiere[mat.nom] !== null && r.notesParMatiere[mat.nom] !== undefined).length;
+            let f = resultatsClasse.filter(r => r.sexe === 'F' && r.notesParMatiere[mat.nom] !== null && r.notesParMatiere[mat.nom] !== undefined).length;
+            let t = g + f;
+            html += `<td>${g}</td><td class="col-female">${f}</td><td>${t}</td>`;
+        });
+        let gTotComp = resultatsClasse.filter(r => r.sexe === 'M' && r.aCompose).length;
+        let fTotComp = resultatsClasse.filter(r => r.sexe === 'F' && r.aCompose).length;
+        html += `<td><b>${gTotComp}</b></td><td class="col-female"><b>${fTotComp}</b></td><td><b>${gTotComp + fTotComp}</b></td></tr>`;
+
+        // 2. Ayant la moyenne (>= 5/10)
+        html += `<tr><td style="text-align:left; font-weight:bold;">Ayant la moyenne (&ge; 5/10)</td>`;
+        matieresTriees.forEach(mat => {
+            let seuil = mat.bareme / 2;
+            let g = resultatsClasse.filter(r => r.sexe === 'M' && r.notesParMatiere[mat.nom] !== null && r.notesParMatiere[mat.nom] !== undefined && r.notesParMatiere[mat.nom] >= seuil).length;
+            let f = resultatsClasse.filter(r => r.sexe === 'F' && r.notesParMatiere[mat.nom] !== null && r.notesParMatiere[mat.nom] !== undefined && r.notesParMatiere[mat.nom] >= seuil).length;
+            let t = g + f;
+            html += `<td>${g}</td><td class="col-female">${f}</td><td>${t}</td>`;
+        });
+        let gTotMoy = resultatsClasse.filter(r => r.sexe === 'M' && r.aCompose && r.moyenneSur10 >= 5).length;
+        let fTotMoy = resultatsClasse.filter(r => r.sexe === 'F' && r.aCompose && r.moyenneSur10 >= 5).length;
+        html += `<td><b>${gTotMoy}</b></td><td class="col-female"><b>${fTotMoy}</b></td><td><b>${gTotMoy + fTotMoy}</b></td></tr>`;
+
+        // 3. N'ayant pas la moyenne (< 5/10)
+        html += `<tr><td style="text-align:left; font-weight:bold;">N'ayant pas la moyenne (&lt; 5/10)</td>`;
+        matieresTriees.forEach(mat => {
+            let seuil = mat.bareme / 2;
+            let g = resultatsClasse.filter(r => r.sexe === 'M' && r.notesParMatiere[mat.nom] !== null && r.notesParMatiere[mat.nom] !== undefined && r.notesParMatiere[mat.nom] < seuil).length;
+            let f = resultatsClasse.filter(r => r.sexe === 'F' && r.notesParMatiere[mat.nom] !== null && r.notesParMatiere[mat.nom] !== undefined && r.notesParMatiere[mat.nom] < seuil).length;
+            let t = g + f;
+            html += `<td>${g}</td><td class="col-female">${f}</td><td>${t}</td>`;
+        });
+        let gTotNonMoy = gTotComp - gTotMoy;
+        let fTotNonMoy = fTotComp - fTotMoy;
+        html += `<td><b>${gTotNonMoy > 0 ? gTotNonMoy : 0}</b></td><td class="col-female"><b>${fTotNonMoy > 0 ? fTotNonMoy : 0}</b></td><td><b>${(gTotNonMoy > 0 ? gTotNonMoy : 0) + (fTotNonMoy > 0 ? fTotNonMoy : 0)}</b></td></tr>`;
+
+        html += `</tbody></table>`;
+
+        // --- TABLEAU 1 : Distribution par intervalles de moyenne (4 colonnes) ---
+        html += `<h4 style="color:var(--primary); margin-top:25px;">Répartition des moyennes par intervalles</h4>`;
+        html += `<table><thead><tr>`;
+        html += `<th>Intervalles de Moyenne</th>`;
+        html += `<th>Garçons (G)</th>`;
+        html += `<th class="col-female">Filles (F)</th>`;
+        html += `<th>Total (T)</th>`;
+        html += `</tr></thead><tbody>`;
+
+        let intervalles = [
+            { label: "0 - 0,99", min: 0, max: 0.999 },
+            { label: "1 - 1,99", min: 1, max: 1.999 },
+            { label: "2 - 2,99", min: 2, max: 2.999 },
+            { label: "3 - 3,99", min: 3, max: 3.999 },
+            { label: "4 - 4,99", min: 4, max: 4.999 },
+            { label: "5 - 5,99", min: 5, max: 5.999 },
+            { label: "6 - 6,99", min: 6, max: 6.999 },
+            { label: "7 - 7,99", min: 7, max: 7.999 },
+            { label: "8 - 8,99", min: 8, max: 8.999 },
+            { label: "9 - 10", min: 9, max: 10 }
+        ];
+
+        intervalles.forEach(iv => {
+            let gCount = resultatsClasse.filter(r => r.sexe === 'M' && r.aCompose && r.moyenneSur10 >= iv.min && r.moyenneSur10 <= iv.max).length;
+            let fCount = resultatsClasse.filter(r => r.sexe === 'F' && r.aCompose && r.moyenneSur10 >= iv.min && r.moyenneSur10 <= iv.max).length;
+            let tCount = gCount + fCount;
+
+            html += `<tr>`;
+            html += `<td style="font-weight:bold; text-align:left;">${iv.label}</td>`;
+            html += `<td>${gCount}</td>`;
+            html += `<td class="col-female">${fCount}</td>`;
+            html += `<td><b>${tCount}</b></td>`;
+            html += `</tr>`;
+        });
+        html += `</tbody></table>`;
+
+        // --- TABLEAU 2 : Moyennes des Garçons, des Filles et de la Classe ---
+        let garconsComposants = resultatsClasse.filter(r => r.sexe === 'M' && r.aCompose);
+        let fillesComposantes = resultatsClasse.filter(r => r.sexe === 'F' && r.aCompose);
+        let tousComposants = resultatsClasse.filter(r => r.aCompose);
+
+        let sommeMoyG = garconsComposants.reduce((acc, curr) => acc + curr.moyenneSur10, 0);
+        let moyGarcons = garconsComposants.length > 0 ? (sommeMoyG / garconsComposants.length).toFixed(2) : "0.00";
+
+        let sommeMoyF = fillesComposantes.reduce((acc, curr) => acc + curr.moyenneSur10, 0);
+        let moyFilles = fillesComposantes.length > 0 ? (sommeMoyF / fillesComposantes.length).toFixed(2) : "0.00";
+
+        let sommeMoyClasse = tousComposants.reduce((acc, curr) => acc + curr.moyenneSur10, 0);
+        let moyClasse = tousComposants.length > 0 ? (sommeMoyClasse / tousComposants.length).toFixed(2) : "0.00";
+
+        html += `<h4 style="color:var(--primary); margin-top:25px;">Synthèse des Moyennes Générales</h4>`;
+        html += `<table><thead><tr>`;
+        html += `<th>Moyenne Générale des Garçons (G)</th>`;
+        html += `<th class="col-female">Moyenne Générale des Filles (F)</th>`;
+        html += `<th>Moyenne Générale de la Classe (T)</th>`;
+        html += `</tr></thead><tbody>`;
+        html += `<tr>`;
+        html += `<td><b style="font-size:15px;">${moyGarcons} / 10</b></td>`;
+        html += `<td class="col-female"><b style="font-size:15px;">${moyFilles} / 10</b></td>`;
+        html += `<td><b style="font-size:15px; color:var(--primary);">${moyClasse} / 10</b></td>`;
+        html += `</tr>`;
+        html += `</tbody></table>`;
+
+        html += `<button onclick="window.print()" style="margin-top:20px; background:#48bb78; color:#ffffff;">🖨️ Imprimer les Tableaux Synoptiques</button>`;
+        container.innerHTML = html;
+    }
+
+</script>
+<!-- Fin de ton script principal (ligne 1063) -->
+
+<!-- Colle le bloc Firebase ici -->
+<script type="module">
+ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getDatabase, ref, set, push, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAbVG1zsaUlAsBS4zak68-t9XIfsUBCMhi",
+  authDomain: "monapppwa.firebaseapp.com",
+  databaseURL: "https://monapppwa-default-rtdb.firebaseio.com",
+  projectId: "monapppwa",
+  storageBucket: "monapppwa.firebasestorage.app",
+  messagingSenderId: "702075328171",
+  appId: "1:702075328171:web:849646e147786448cb09ee",
+  measurementId: "G-8Q2H6F2CM7"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// On attache directement les fonctions à window pour les utiliser partout
+window.db = db;
+window.rtdbRef = ref;
+window.rtdbSet = set;
+window.rtdbPush = push;
+window.rtdbOnValue = onValue;
+</script>
+
+</body> <!-- Ligne 1064 -->
+</html> <!-- Ligne 1065 -->
+
+
