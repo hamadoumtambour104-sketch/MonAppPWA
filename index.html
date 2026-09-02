@@ -315,7 +315,32 @@
         if (!donneesApp.matieresGlobales) donneesApp.matieresGlobales = [];
     }
     init();
+    function init() {
+    chargerDonneesLocal();
+    if (!donneesApp.utilisateurs) donneesApp.utilisateurs = [];
+    if (!donneesApp.notes) donneesApp.notes = [];
+    if (!donneesApp.eleves) donneesApp.eleves = [];
+    if (!donneesApp.classes) donneesApp.classes = [];
+    if (!donneesApp.matieresGlobales) donneesApp.matieresGlobales = [];
+}
+init();
 
+// Écoute en temps réel de la Realtime Database pour synchroniser les utilisateurs
+window.firebaseOnValue(window.firebaseRef(window.firebaseDb, "utilisateurs"), (snapshot) => {
+  const data = snapshot.val();
+  if (data) {
+    donneesApp.utilisateurs = Object.keys(data).map(key => ({
+      firebaseId: key,
+      ...data[key]
+    }));
+  } else {
+    donneesApp.utilisateurs = [];
+  }
+  sauvegarderDonneesLocal();
+  if (typeof rafraichirInterface === 'function') {
+    rafraichirInterface();
+  }
+});
     function basculerVisibilitePassword(id, el) {
         let input = document.getElementById(id);
         if (input.type === "password") { input.type = "text"; el.textContent = "🔒"; }
@@ -405,28 +430,41 @@
         document.getElementById('modalChangementPassword').classList.add('hidden');
     }
 
-    function soumettreNouveauMotDePasse() {
-        let username = document.getElementById('pwdUser').value.trim();
-        let ancienPass = document.getElementById('pwdAncien').value.trim();
-        let nouveauPass = document.getElementById('pwdNouveau').value.trim();
+    async function soumettreDemandeAbonnement() {
+  let op = document.getElementById('aboOperateur').value;
+  let tel = document.getElementById('aboTelemuteur').value.trim();
+  let refTx = document.getElementById('aboCodeOtp').value.trim();
 
-        if (!username || !ancienPass || !nouveauPass) {
-            alert("Veuillez remplir tous les champs.");
-            return;
-        }
+  let userField = document.getElementById('authUser');
+  let user = userField ? userField.value.trim() : "Anonyme";
 
-        chargerDonneesLocal();
-        let u = donneesApp.utilisateurs.find(x => x.username === username && x.password === ancienPass);
-        if (!u) {
-            alert("Nom d'utilisateur ou ancien mot de passe incorrect.");
-            return;
-        }
+  let passField = document.getElementById('authPass');
+  let pass = passField ? passField.value.trim() : "123";
 
-        u.password = nouveauPass;
-        sauvegarderDonneesLocal();
-        alert("Mot de passe modifié avec succès !");
-        fermerModalChangementPassword();
-    }
+  if (!tel || !refTx) {
+    alert("Veuillez renseigner le téléphone émetteur et la référence de transaction.");
+    return;
+  }
+
+  const abonnementTexte = `${formulaireSelectionnee.nom} (${formulaireSelectionnee.montant}F) - ${op} - Tél: ${tel} - Réf: ${refTx}`;
+
+  try {
+    const utilisateursRef = window.firebaseRef(window.firebaseDb, "utilisateurs");
+    await window.firebasePush(utilisateursRef, {
+      username: user,
+      password: pass || "123",
+      abonnement: abonnementTexte,
+      statut: "en_attente",
+      date: new Date().toISOString()
+    });
+
+    alert("Preuve d'abonnement soumise avec succès sur Firebase !");
+    fermerModalAbonnement();
+  } catch (error) {
+    console.error("Erreur Firebase :", error);
+    alert("Erreur lors de l'enregistrement : " + error.message);
+  }
+}
 
     function ouvrirModalAbonnement() { document.getElementById('modalAbonnement').classList.remove('hidden'); }
     function fermerModalAbonnement() { document.getElementById('modalAbonnement').classList.add('hidden'); }
