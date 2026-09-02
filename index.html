@@ -421,7 +421,9 @@ window.rtdbOnValue(window.rtdbRef(window.db, "utilisateurs"), (snapshot) => {
         document.getElementById('modalChangementPassword').classList.add('hidden');
     }
 
-    async function soumettreDemandeAbonnement() {
+    
+    // La fonction doit obligatoirement commencer par 'async'
+async function soumettreDemandeAbonnement() {
   let op = document.getElementById('aboOperateur').value;
   let tel = document.getElementById('aboTelemuteur').value.trim();
   let refTx = document.getElementById('aboCodeOtp').value.trim();
@@ -440,8 +442,8 @@ window.rtdbOnValue(window.rtdbRef(window.db, "utilisateurs"), (snapshot) => {
   const abonnementTexte = `${formulaireSelectionnee.nom} (${formulaireSelectionnee.montant}F) - ${op} - Tél: ${tel} - Réf: ${refTx}`;
 
   try {
-    // === C'EST ICI QU'IL FAUT COLLER CE CODE ===
     const utilisateursRef = window.rtdbRef(window.db, "utilisateurs");
+    // Le 'await' fonctionne ici car la fonction est 'async'
     await window.rtdbPush(utilisateursRef, {
       username: user,
       password: pass || "123",
@@ -449,7 +451,6 @@ window.rtdbOnValue(window.rtdbRef(window.db, "utilisateurs"), (snapshot) => {
       statut: "en_attente",
       date: new Date().toISOString()
     });
-    // ==========================================
 
     alert("Preuve d'abonnement soumise avec succès !");
     fermerModalAbonnement();
@@ -457,24 +458,6 @@ window.rtdbOnValue(window.rtdbRef(window.db, "utilisateurs"), (snapshot) => {
     console.error("Erreur Firebase :", error);
     alert("Erreur lors de l'enregistrement : " + error.message);
   }
-}
-    const abonnementTexte = `${formulaireselectionnee.nom} (${formulaireselectionnee.montant}F) - ${op} - Tél: ${tel} - Réf: ${ref}`;
-
-    try {
-        await window.firebaseAddDoc(window.firebaseCollection(window.firebaseDb, "utilisateurs"), {
-            username: user,
-            password: pass || "123",
-            abonnement: abonnementTexte,
-            statut: "en_attente",
-            date: new Date().toISOString()
-        });
-        
-        alert("Preuve d'abonnement soumise avec succès sur Firebase !");
-        fermerModalAbonnement();
-    } catch (error) {
-        console.error("Erreur Firebase :", error);
-        alert("Erreur lors de l'enregistrement : " + error.message);
-    }
 }
 
     function ouvrirModalAdminAuth() { document.getElementById('adminComptesModal').classList.remove('hidden'); }
