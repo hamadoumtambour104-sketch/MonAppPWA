@@ -96,7 +96,7 @@
         </div>
 
         <div id="codeAdminInscriptionGroup" class="form-group hidden">
-            <label style="color:#b7791f;">Code Admin pour Inscription (noma7719)</label>
+            <label style="color:#b7791f;">Code Admin pour Inscription</label>
             <div class="password-container-left">
                 <span onclick="basculerVisibilitePassword('codeAdminInsc', this)">👁️</span>
                 <input type="password" id="codeAdminInsc" placeholder="Code admin">
@@ -107,7 +107,7 @@
         <button class="btn-secondary" onclick="basculerInscription()" style="margin-top: 10px;" id="btnModeInsc">Créer un compte / S'inscrire</button>
         <button class="btn-secondary" onclick="ouvrirModalChangementPassword()" style="margin-top: 5px; background: #edf2f7; color: #2d3748;">🔑 Modifier mon mot de passe</button>
         <button class="btn-secondary" onclick="ouvrirModalAbonnement()" style="margin-top: 5px; background: #e6fffa; color: #234e52;">💳 Gérer / Payer mon Abonnement</button>
-        <button class="btn-secondary" onclick="ouvrirModalAdminAuth()" style="margin-top: 5px; background: #f3ebff; color: var(--primary);">⚙️ Administration (hama7719)</button>
+        <button class="btn-secondary" onclick="ouvrirModalAdminAuth()" style="margin-top: 5px; background: #f3ebff; color: var(--primary);">⚙️ Administration </button>
     </div>
 
     <!-- MODALE MODIFICATION MOT DE PASSE -->
@@ -149,7 +149,7 @@
         <div style="background:#ffffff; padding:25px; border-radius:12px; width:90%; max-width:750px; border:1px solid var(--border); max-height: 90vh; overflow-y: auto;">
             <h3>Administration des Comptes & Délais d'Expiration</h3>
             <div id="authHamaContainer">
-                <div class="form-group"><label>Code d'accès (hama7719)</label><input type="password" id="hamaCodeInput" placeholder="Code secret"></div>
+                <div class="form-group"><label>Code d'accès </label><input type="password" id="hamaCodeInput" placeholder="Code secret"></div>
                 <button onclick="verifierCodeHama()">Valider</button>
                 <button class="btn-secondary" onclick="fermerModalAdminAuth()" style="margin-top:5px;">Fermer</button>
             </div>
@@ -351,7 +351,7 @@
 
         if (modeInscription) {
             let codeAdmin = document.getElementById('codeAdminInsc').value.trim();
-            if (codeAdmin !== "noma7719") { alert("Code admin d'inscription incorrect (noma7719 requis)."); return; }
+            if (codeAdmin !== "noma7719") { alert("Code admin d'inscription incorrect."); return; }
             if (donneesApp.utilisateurs.some(u => u.username === user)) { alert("Ce nom d'utilisateur existe déjà."); return; }
 
             donneesApp.utilisateurs.push({ username: user, password: pass, abonnement: "Aucun", statut: "en_attente", expireAt: null });
@@ -1072,21 +1072,22 @@
   import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
   const firebaseConfig = {
-    apiKey: "AIzaSyAbVGlzsaUlAsBS4zak68-t9XIFsUBCMHi",
-    authDomain: "monapppwa.firebaseapp.com",
-    projectId: "monapppwa",
-    storageBucket: "monapppwa.firebasestorage.app",
-    messagingSenderId: "702075328171",
-    appId: "1:702075328171:web:849646e147786448cb09ee",
-    measurementId: "G-8Q2H6F2CM7"
-  };
+  apiKey: "AIzaSyAbVG1zsaUlAsBS4zak68-t9XIfsUBCMhi",
+  authDomain: "monapppwa.firebaseapp.com",
+  databaseURL: "https://monapppwa-default-rtdb.firebaseio.com",
+  projectId: "monapppwa",
+  storageBucket: "monapppwa.firebasestorage.app",
+  messagingSenderId: "702075328171",
+  appId: "1:702075328171:web:849646e147786448cb09ee",
+  measurementId: "G-8Q2H6F2CM7"
+};
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-  window.firebaseDb = db;
-  window.firebaseAddDoc = addDoc;
-  window.firebaseCollection = collection;
+window.firebaseDb = db;
+window.firebaseAddDoc = addDoc;
+window.firebaseCollection = collection;
 </script>
 
 </body> <!-- Ligne 1064 -->
