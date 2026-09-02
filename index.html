@@ -307,15 +307,6 @@
     }
 
     function init() {
-        chargerDonneesLocal();
-        if (!donneesApp.utilisateurs) donneesApp.utilisateurs = [];
-        if (!donneesApp.notes) donneesApp.notes = [];
-        if (!donneesApp.eleves) donneesApp.eleves = [];
-        if (!donneesApp.classes) donneesApp.classes = [];
-        if (!donneesApp.matieresGlobales) donneesApp.matieresGlobales = [];
-    }
-    init();
-    function init() {
     chargerDonneesLocal();
     if (!donneesApp.utilisateurs) donneesApp.utilisateurs = [];
     if (!donneesApp.notes) donneesApp.notes = [];
@@ -326,7 +317,7 @@
 init();
 
 // Écoute en temps réel de la Realtime Database pour synchroniser les utilisateurs
-window.firebaseOnValue(window.firebaseRef(window.firebaseDb, "utilisateurs"), (snapshot) => {
+window.rtdbOnValue(window.rtdbRef(window.db, "utilisateurs"), (snapshot) => {
   const data = snapshot.val();
   if (data) {
     donneesApp.utilisateurs = Object.keys(data).map(key => ({
@@ -449,50 +440,24 @@ window.firebaseOnValue(window.firebaseRef(window.firebaseDb, "utilisateurs"), (s
   const abonnementTexte = `${formulaireSelectionnee.nom} (${formulaireSelectionnee.montant}F) - ${op} - Tél: ${tel} - Réf: ${refTx}`;
 
   try {
-    const utilisateursRef = window.firebaseRef(window.firebaseDb, "utilisateurs");
-    await window.firebasePush(utilisateursRef, {
+    // === C'EST ICI QU'IL FAUT COLLER CE CODE ===
+    const utilisateursRef = window.rtdbRef(window.db, "utilisateurs");
+    await window.rtdbPush(utilisateursRef, {
       username: user,
       password: pass || "123",
       abonnement: abonnementTexte,
       statut: "en_attente",
       date: new Date().toISOString()
     });
+    // ==========================================
 
-    alert("Preuve d'abonnement soumise avec succès sur Firebase !");
+    alert("Preuve d'abonnement soumise avec succès !");
     fermerModalAbonnement();
   } catch (error) {
     console.error("Erreur Firebase :", error);
     alert("Erreur lors de l'enregistrement : " + error.message);
   }
 }
-
-    function ouvrirModalAbonnement() { document.getElementById('modalAbonnement').classList.remove('hidden'); }
-    function fermerModalAbonnement() { document.getElementById('modalAbonnement').classList.add('hidden'); }
-
-    function selectionnerFormule(nom, montant, element) {
-        formuleSelectionnee = { nom, montant };
-        document.querySelectorAll('.pricing-card').forEach(c => c.classList.remove('selected'));
-        if (element) {
-            element.classList.add('selected');
-        }
-    }
-
-    async function soumettreDemandeAbonnement() {
-    let op = document.getElementById('aboOperateur').value;
-    let tel = document.getElementById('aboTelEmetteur').value.trim();
-    let ref = document.getElementById('aboCodeOtp').value.trim();
-
-    let userField = document.getElementById('authUser');
-    let user = userField ? userField.value.trim() : "Anonyme";
-
-    let passField = document.getElementById('authPass');
-    let pass = passField ? passField.value.trim() : "123";
-
-    if (!tel || !ref) {
-    alert("Veuillez renseigner le téléphone émetteur et la référence de transaction.");
-    return;
-}
-
     const abonnementTexte = `${formulaireselectionnee.nom} (${formulaireselectionnee.montant}F) - ${op} - Tél: ${tel} - Réf: ${ref}`;
 
     try {
@@ -1106,28 +1071,29 @@ window.firebaseOnValue(window.firebaseRef(window.firebaseDb, "utilisateurs"), (s
 
 <!-- Colle le bloc Firebase ici -->
 <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getDatabase, ref, set, push, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyAbVG1zsaUlAsBS4zaK68-t9XIFsUBCMhI",
-    authDomain: "monapppwa.firebaseapp.com",
-    databaseURL: "https://monapppwa-default-rtdb.firebaseio.com",
-    projectId: "monapppwa",
-    storageBucket: "monapppwa.firebasestorage.app",
-    messagingSenderId: "702075328171",
-    appId: "1:702075328171:web:849646e147786448cb09ee",
-    measurementId: "G-8Q2H6F2CM7"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyAbVG1zsaUlAsBS4zak68-t9XIfsUBCMhi",
+  authDomain: "monapppwa.firebaseapp.com",
+  databaseURL: "https://monapppwa-default-rtdb.firebaseio.com",
+  projectId: "monapppwa",
+  storageBucket: "monapppwa.firebasestorage.app",
+  messagingSenderId: "702075328171",
+  appId: "1:702075328171:web:849646e147786448cb09ee",
+  measurementId: "G-8Q2H6F2CM7"
+};
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// On attache directement les fonctions à window pour les utiliser partout
+window.db = db;
+window.rtdbRef = ref;
+window.rtdbSet = set;
+window.rtdbPush = push;
+window.rtdbOnValue = onValue;
 </script>
 
 </body> <!-- Ligne 1064 -->
