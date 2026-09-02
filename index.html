@@ -423,41 +423,27 @@ window.rtdbOnValue(window.rtdbRef(window.db, "utilisateurs"), (snapshot) => {
 
     
     // La fonction doit obligatoirement commencer par 'async'
-async function soumettreDemandeAbonnement() {
-  let op = document.getElementById('aboOperateur').value;
+function soumettreDemandeAbonnement() {
   let tel = document.getElementById('aboTelemuteur').value.trim();
   let refTx = document.getElementById('aboCodeOtp').value.trim();
-
   let userField = document.getElementById('authUser');
-  let user = userField ? userField.value.trim() : "Anonyme";
-
-  let passField = document.getElementById('authPass');
-  let pass = passField ? passField.value.trim() : "123";
+  let user = userField ? userField.value.trim() : "Utilisateur";
 
   if (!tel || !refTx) {
-    alert("Veuillez renseigner le téléphone émetteur et la référence de transaction.");
+    alert("Veuillez renseigner le téléphone et la référence.");
     return;
   }
 
-  const abonnementTexte = `${formulaireSelectionnee.nom} (${formulaireSelectionnee.montant}F) - ${op} - Tél: ${tel} - Réf: ${refTx}`;
+  // Envoi direct et instantané dans Firebase Realtime Database
+  window.rtdbSet(window.rtdbRef(window.db, "utilisateurs/" + user), {
+    username: user,
+    statut: "en_attente",
+    paiement: `Tél: ${tel} - Réf: ${refTx}`,
+    dateSoumission: new Date().toISOString()
+  });
 
-  try {
-    const utilisateursRef = window.rtdbRef(window.db, "utilisateurs");
-    // Le 'await' fonctionne ici car la fonction est 'async'
-    await window.rtdbPush(utilisateursRef, {
-      username: user,
-      password: pass || "123",
-      abonnement: abonnementTexte,
-      statut: "en_attente",
-      date: new Date().toISOString()
-    });
-
-    alert("Preuve d'abonnement soumise avec succès !");
-    fermerModalAbonnement();
-  } catch (error) {
-    console.error("Erreur Firebase :", error);
-    alert("Erreur lors de l'enregistrement : " + error.message);
-  }
+  alert("Preuve soumise avec succès !");
+  fermerModalAbonnement();
 }
 
     function ouvrirModalAdminAuth() { document.getElementById('adminComptesModal').classList.remove('hidden'); }
@@ -515,21 +501,16 @@ async function soumettreDemandeAbonnement() {
         }
     }
 
-    function validerAbonnementAdmin(idx) {
-        let qte = parseInt(document.getElementById(`valDelai_${idx}`).value) || 0;
-        let unite = document.getElementById(`uniteDelai_${idx}`).value;
+    function validerAbonnement(userId, selectJoursId) {
+  let select = document.getElementById(selectJoursId);
+  let jours = select ? select.value : "30";
 
-        if (qte <= 0) { alert("Veuillez entrer une durée valide supérieure à 0."); return; }
+  // Mise à jour directe du statut et de la durée sur Firebase
+  window.rtdbSet(window.rtdbRef(window.db, "utilisateurs/" + userId + "/statut"), "validé");
+  window.rtdbSet(window.rtdbRef(window.db, "utilisateurs/" + userId + "/delai"), jours + " Jours");
 
-        let dureeMs = (unite === 'jours') ? (qte * 24 * 60 * 60 * 1000) : (qte * 60 * 60 * 1000);
-        
-        donneesApp.utilisateurs[idx].statut = "valide";
-        donneesApp.utilisateurs[idx].expireAt = Date.now() + dureeMs;
-
-        sauvegarderDonneesLocal();
-        alert(`Abonnement validé avec un délai de ${qte} ${unite} !`);
-        verifierCodeHama();
-    }
+  alert(`Abonnement validé avec un délai de ${jours} jours !`);
+}
 
     function revoquerAbonnementAdmin(idx) {
         donneesApp.utilisateurs[idx].statut = "revoque";
