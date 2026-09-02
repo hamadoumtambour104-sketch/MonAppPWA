@@ -1068,26 +1068,28 @@
 
 <!-- Colle le bloc Firebase ici -->
 <script type="module">
+  // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
 
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
   const firebaseConfig = {
-  apiKey: "AIzaSyAbVG1zsaUlAsBS4zak68-t9XIfsUBCMhi",
-  authDomain: "monapppwa.firebaseapp.com",
-  databaseURL: "https://monapppwa-default-rtdb.firebaseio.com",
-  projectId: "monapppwa",
-  storageBucket: "monapppwa.firebasestorage.app",
-  messagingSenderId: "702075328171",
-  appId: "1:702075328171:web:849646e147786448cb09ee",
-  measurementId: "G-8Q2H6F2CM7"
-};
+    apiKey: "AIzaSyAbVG1zsaUlAsBS4zaK68-t9XIFsUBCMhI",
+    authDomain: "monapppwa.firebaseapp.com",
+    databaseURL: "https://monapppwa-default-rtdb.firebaseio.com",
+    projectId: "monapppwa",
+    storageBucket: "monapppwa.firebasestorage.app",
+    messagingSenderId: "702075328171",
+    appId: "1:702075328171:web:849646e147786448cb09ee",
+    measurementId: "G-8Q2H6F2CM7"
+  };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-window.firebaseDb = db;
-window.firebaseAddDoc = addDoc;
-window.firebaseCollection = collection;
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
 </script>
 
 </body> <!-- Ligne 1064 -->
